@@ -12,5 +12,11 @@
   },
   "keywords": [],
   "author": "Ricardo Masabel",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "aws-sdk": "^2.1167.0",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1"
+  }
 }
