@@ -6,7 +6,7 @@ pipeline {
       stage('Git') {
          steps {
             git url: 'https://github.com/rmasabeltsoft/tasks-api',
-            credentialsId: 'GitHubTsoft-TasksAPI'
+            credentialsId: 'rmasabeltsoft'
          }
       }
       
