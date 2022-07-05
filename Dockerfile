@@ -1,6 +1,6 @@
 FROM node:16-alpine
 
-# Copy files as a non-root user. The `node` user is built in the Node image.
+# Copy files as a non-root user. The 'node' user is built in the Node image.
 WORKDIR /usr/src/app
 RUN chown node:node ./
 USER node
