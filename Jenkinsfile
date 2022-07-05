@@ -1,7 +1,7 @@
 pipeline {
    agent { label 'master-only' }
    
-   tools {nodejs "node.js 18.4.0"}
+   tools {nodejs "node.js 16"}
    stages {
       stage('Build') {
          steps {
