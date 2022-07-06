@@ -1,4 +1,5 @@
 pipeline {
+   
    agent { label 'generic' }
    
    tools {nodejs "node.js 16"}
