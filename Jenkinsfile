@@ -38,6 +38,7 @@ pipeline {
 
       stage('Deploy') {
          steps {
+            sh 'kubectl config use-context pstdemo'
             sh 'kubectl apply -f tasks-api-full.yaml'
          }
       }
