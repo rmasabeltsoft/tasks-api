@@ -1,5 +1,5 @@
 pipeline {
-   agent anys
+   agent any
    
    tools {nodejs "node.js 16"}
    stages {
