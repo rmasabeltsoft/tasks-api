@@ -44,6 +44,5 @@ pipeline {
             sh 'kubectl apply -f tasks-api-full.yaml'
          }
       }
-
    }
 }
