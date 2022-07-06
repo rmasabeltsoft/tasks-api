@@ -1,9 +1,9 @@
 pipeline {
-   agent any
+   agent { label 'generic' }
    
    tools {nodejs "node.js 16"}
    stages {
-      stage('Node Build') {
+      stage('Build') {
          steps {
             sh 'npm install'
          }
@@ -12,14 +12,6 @@ pipeline {
       stage('Test') {
          steps {
             sh 'npm test'
-         }
-      }
-
-      stage('Docker Build') {
-         steps {
-            script{
-               app = docker.build("tasks-api")
-            }
          }
       }
    }
