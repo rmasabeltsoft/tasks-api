@@ -1,5 +1,5 @@
 pipeline {
-   
+
    agent { label 'generic' }
    
    tools {nodejs "node.js 16"}
@@ -39,6 +39,7 @@ pipeline {
 
       stage('Deploy') {
          steps {
+            sh 'aws eks update-kubeconfig --region us-east-1 --name pstdemo'
             sh 'kubectl config use-context pstdemo'
             sh 'kubectl apply -f tasks-api-full.yaml'
          }
