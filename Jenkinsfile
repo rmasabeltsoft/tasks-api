@@ -5,6 +5,7 @@ pipeline {
    tools {nodejs "node.js 16"}
 
    stages {
+      
       stage('Node Build') {
          steps {
             sh 'npm install'
@@ -44,5 +45,6 @@ pipeline {
             sh 'kubectl apply -f tasks-api-full.yaml'
          }
       }
+
    }
 }
