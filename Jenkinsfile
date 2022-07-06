@@ -5,7 +5,7 @@ pipeline {
    tools {nodejs "node.js 16"}
 
    stages {
-      
+
       stage('Node Build') {
          steps {
             sh 'npm install'
@@ -40,7 +40,6 @@ pipeline {
 
       stage('Deploy') {
          steps {
-            sh 'aws eks update-kubeconfig --region us-east-1 --name pstdemo'
             sh 'kubectl config use-context pstdemo'
             sh 'kubectl apply -f tasks-api-full.yaml'
          }
