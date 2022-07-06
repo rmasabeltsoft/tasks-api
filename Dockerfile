@@ -13,6 +13,7 @@ COPY package.json package-lock.json* /usr/src/app/
 RUN npm ci && npm cache clean --force
 COPY . /usr/src/app
 
+
 CMD ["node", "/usr/src/app/server.js"]
 
 EXPOSE 3000
