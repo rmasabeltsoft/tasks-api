@@ -1,5 +1,5 @@
 pipeline {
-   agent { label 'master-only' }
+   agent { any }
    
    tools {nodejs "node.js 16"}
    stages {
