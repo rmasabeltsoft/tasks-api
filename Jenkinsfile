@@ -22,5 +22,17 @@ pipeline {
             }
          }
       }
+
+      stage('Docker Push') {
+         steps {
+            script{
+               docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws-credentials') {
+                  app.push("${env.BUILD_NUMBER}")
+                  app.push("v1")
+                  app.push("latest")
+               }
+            }
+         }
+      }
    }
 }
