@@ -3,15 +3,23 @@ pipeline {
    
    tools {nodejs "node.js 16"}
    stages {
-      stage('Build') {
+      stage('Node Build') {
          steps {
             sh 'npm install'
          }
       }
       
-      stage('Test') {
+      stage('Node Test') {
          steps {
             sh 'npm test'
+         }
+      }
+
+      stage('Docker Build') {
+         steps {
+            script{
+               app = docker.build("tasks-api")
+            }
          }
       }
    }
