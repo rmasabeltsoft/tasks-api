@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/name: app-tasks
     spec:
       containers:
-      - image: 830931683151.dkr.ecr.us-east-1.amazonaws.com/tasks-api:v1
+      - image: 830931683151.dkr.ecr.us-east-1.amazonaws.com/tasks-api:latest
         imagePullPolicy: Always
         name: app-tasks
         ports:

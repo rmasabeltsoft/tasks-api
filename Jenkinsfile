@@ -1,3 +1,7 @@
+def app
+def dockerLabel
+def buildNumber = currentBuild.number
+
 pipeline {
 
    agent { label 'generic' }
@@ -6,27 +10,48 @@ pipeline {
 
    stages {
 
-      stage("Config vars") {
+      stage('Development Variables') {
+         when {
+            branch 'dev'
+         }
+         environment { 
+            APP_ENVIRONMENT = 'development'
+         }
          steps {
             script {
-               switch(branch) {
-                  case 'dev':
-                     DOCKER_LABEL = 'dev'
-                     APP_ENVIRONMENT = 'dev'
-                     break
-                  case 'qa':
-                     DOCKER_LABEL = 'qa'
-                     APP_ENVIRONMENT = 'qa'
-                     break
-                  case "main":
-                     DOCKER_LABEL = 'latest'
-                     APP_ENVIRONMENT = 'production'
-                     break
-                  default:
-                     DOCKER_LABEL = ''
-                     APP_ENVIRONMENT = ''
-               }
+               dockerLabel = 'dev'
             }
+            sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
+         }
+      }
+
+      stage('QA Variables') {
+         when {
+            branch 'qa'
+         }
+         environment { 
+            APP_ENVIRONMENT = 'qa'
+         }
+         steps {
+            script {
+               dockerLabel = 'qa'
+            }
+            sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
+         }
+      }
+
+      stage('Production Variables') {
+         when {
+            branch 'main'
+         }
+         environment {
+            APP_ENVIRONMENT = 'production'
+         }
+         steps {
+            script {
+               dockerLabel = 'latest'
+            }
+            sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
       
@@ -57,19 +82,40 @@ pipeline {
          }
       }
 
-      stage('Docker Push') {
+      stage('Docker Push Development') {
          when {
-            anyOf {
-               branch 'dev'
-               branch 'qa'
-               branch 'main'
-            }
+            branch 'dev'
          }
          steps {
             script{
                docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
-                  app.push('${env.BUILD_NUMBER}')
-                  app.push('${env.DOCKER_LABEL}')
+                  app.push('dev')
+               }
+            }
+         }
+      }
+
+      stage('Docker Push QA') {
+         when {
+            branch 'qa'
+         }
+         steps {
+            script{
+               docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
+                  app.push('qa')
+               }
+            }
+         }
+      }
+
+      stage('Docker Push Production') {
+         when {
+            branch 'main'
+         }
+         steps {
+            script{
+               docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
+                  app.push('latest')
                }
             }
          }
