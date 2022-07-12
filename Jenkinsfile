@@ -1,3 +1,7 @@
+def app
+def label
+def buildNumber = currentBuild.number
+
 pipeline {
 
    agent { label 'generic' }
@@ -5,10 +9,6 @@ pipeline {
    tools { nodejs 'node.js 16' }
 
    stages {
-
-      def app
-      def label
-      def buildNumber = currentBuild.number
 
       stage('Development Variables') {
          when {
