@@ -6,27 +6,42 @@ pipeline {
 
    stages {
 
-      stage("Config vars") {
+      stage("Development Variables") {
+         when {
+            branch 'dev'
+         }
+         environment { 
+            DOCKER_LABEL = 'dev'
+            APP_ENVIRONMENT = 'development'
+         }
          steps {
-            script {
-               switch(branch) {
-                  case 'dev':
-                     DOCKER_LABEL = 'dev'
-                     APP_ENVIRONMENT = 'dev'
-                     break
-                  case 'qa':
-                     DOCKER_LABEL = 'qa'
-                     APP_ENVIRONMENT = 'qa'
-                     break
-                  case "main":
-                     DOCKER_LABEL = 'latest'
-                     APP_ENVIRONMENT = 'production'
-                     break
-                  default:
-                     DOCKER_LABEL = ''
-                     APP_ENVIRONMENT = ''
-               }
-            }
+            sh "echo APP_ENVIRONMENT: $APP_ENVIRONMENT"
+         }
+      }
+
+      stage("QA Variables") {
+         when {
+            branch 'qa'
+         }
+         environment { 
+            DOCKER_LABEL = 'qa'
+            APP_ENVIRONMENT = 'qa'
+         }
+         steps {
+            sh "echo APP_ENVIRONMENT: $APP_ENVIRONMENT"
+         }
+      }
+
+      stage("Production Variables") {
+         when {
+            branch 'main'
+         }
+         environment { 
+            DOCKER_LABEL = 'latest'
+            APP_ENVIRONMENT = 'production'
+         }
+         steps {
+            sh "echo APP_ENVIRONMENT: $APP_ENVIRONMENT"
          }
       }
       
