@@ -1,5 +1,5 @@
 def app
-def label
+def dockerLabel
 def buildNumber = currentBuild.number
 
 pipeline {
@@ -18,7 +18,9 @@ pipeline {
             APP_ENVIRONMENT = 'development'
          }
          steps {
-            label = 'dev'
+            script {
+               dockerLabel = 'dev'
+            }
             sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
@@ -31,7 +33,9 @@ pipeline {
             APP_ENVIRONMENT = 'qa'
          }
          steps {
-            label = 'qa'
+            script {
+               dockerLabel = 'qa'
+            }
             sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
@@ -44,7 +48,9 @@ pipeline {
             APP_ENVIRONMENT = 'production'
          }
          steps {
-            label = 'latest'
+            script {
+               dockerLabel = 'latest'
+            }
             sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
@@ -88,7 +94,7 @@ pipeline {
             script{
                docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
                   app.push(buildNumber)
-                  app.push(label)
+                  app.push(dockerLabel)
                }
             }
          }
