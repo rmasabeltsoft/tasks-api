@@ -6,15 +6,19 @@ pipeline {
 
    stages {
 
+      def app
+      def label
+      def buildNumber = currentBuild.number
+
       stage('Development Variables') {
          when {
             branch 'dev'
          }
          environment { 
-            DOCKER_LABEL = 'dev'
             APP_ENVIRONMENT = 'development'
          }
          steps {
+            label = 'dev'
             sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
@@ -24,10 +28,10 @@ pipeline {
             branch 'qa'
          }
          environment { 
-            DOCKER_LABEL = 'qa'
             APP_ENVIRONMENT = 'qa'
          }
          steps {
+            label = 'qa'
             sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
@@ -36,11 +40,11 @@ pipeline {
          when {
             branch 'main'
          }
-         environment { 
-            DOCKER_LABEL = 'latest'
+         environment {
             APP_ENVIRONMENT = 'production'
          }
          steps {
+            label = 'latest'
             sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
@@ -72,43 +76,19 @@ pipeline {
          }
       }
 
-      stage('Docker Push Development') {
+      stage('Docker Push') {
          when {
-            branch 'dev'
-         }
-         steps {
-            script{
-               docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
-                  app.push('${env.BUILD_NUMBER}')
-                  app.push('dev')
-               }
+            anyOf {
+               branch 'dev'
+               branch 'qa'
+               branch 'main'
             }
          }
-      }
-
-      stage('Docker Push QA') {
-         when {
-            branch 'qa'
-         }
          steps {
             script{
                docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
-                  app.push('${env.BUILD_NUMBER}')
-                  app.push('qa')
-               }
-            }
-         }
-      }
-
-      stage('Docker Push Production') {
-         when {
-            branch 'main'
-         }
-         steps {
-            script{
-               docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
-                  app.push('${env.BUILD_NUMBER}')
-                  app.push('latest')
+                  app.push(buildNumber)
+                  app.push(label)
                }
             }
          }
