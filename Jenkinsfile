@@ -84,7 +84,7 @@ pipeline {
             script{
                docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
                   app.push('${env.BUILD_NUMBER}')
-                  app.push('${env.DOCKER_LABEL}')
+                  app.push('env.DOCKER_LABEL')
                }
             }
          }
