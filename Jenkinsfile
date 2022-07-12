@@ -95,7 +95,7 @@ pipeline {
          }
       }
 
-      stage('Docker Push Development') {
+      stage('Docker Push QA') {
          when {
             branch 'qa'
          }
