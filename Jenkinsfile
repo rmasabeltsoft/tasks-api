@@ -79,8 +79,8 @@ pipeline {
             script{
                app = docker.build('tasks-api')
             }
-            sh 'echo dockerLabel: $dockerLabel'
-            sh 'echo buildNumber: $buildNumber'
+            sh 'echo dockerLabel: ${dockerLabel}'
+            sh 'echo buildNumber: ${buildNumber}'
          }
       }
 
@@ -95,8 +95,8 @@ pipeline {
          steps {
             script{
                docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
-                  app.push(buildNumber)
-                  app.push(dockerLabel)
+                  app.push('${currentBuild.number}')
+                  app.push('${dockerLabel}')
                }
             }
          }
