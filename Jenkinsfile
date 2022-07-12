@@ -72,19 +72,43 @@ pipeline {
          }
       }
 
-      stage('Docker Push') {
+      stage('Docker Push Development') {
          when {
-            anyOf {
-               branch 'dev'
-               branch 'qa'
-               branch 'main'
-            }
+            branch 'dev'
          }
          steps {
             script{
                docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
                   app.push('${env.BUILD_NUMBER}')
-                  app.push('${env.DOCKER_LABEL}')
+                  app.push('dev')
+               }
+            }
+         }
+      }
+
+      stage('Docker Push QA') {
+         when {
+            branch 'qa'
+         }
+         steps {
+            script{
+               docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
+                  app.push('${env.BUILD_NUMBER}')
+                  app.push('qa')
+               }
+            }
+         }
+      }
+
+      stage('Docker Push Production') {
+         when {
+            branch 'main'
+         }
+         steps {
+            script{
+               docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
+                  app.push('${env.BUILD_NUMBER}')
+                  app.push('latest')
                }
             }
          }
