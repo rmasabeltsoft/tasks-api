@@ -79,24 +79,43 @@ pipeline {
             script{
                app = docker.build('tasks-api')
             }
-            sh 'echo dockerLabel: ${dockerLabel}'
-            sh 'echo buildNumber: ${buildNumber}'
          }
       }
 
-      stage('Docker Push') {
+      stage('Docker Push Development') {
          when {
-            anyOf {
-               branch 'dev'
-               branch 'qa'
-               branch 'main'
-            }
+            branch 'dev'
          }
          steps {
             script{
                docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
-                  app.push('${currentBuild.number}')
-                  app.push('${dockerLabel}')
+                  app.push('dev')
+               }
+            }
+         }
+      }
+
+      stage('Docker Push Development') {
+         when {
+            branch 'qa'
+         }
+         steps {
+            script{
+               docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
+                  app.push('qa')
+               }
+            }
+         }
+      }
+
+      stage('Docker Push Production') {
+         when {
+            branch 'main'
+         }
+         steps {
+            script{
+               docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
+                  app.push('latest')
                }
             }
          }
