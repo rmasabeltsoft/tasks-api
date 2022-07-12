@@ -79,8 +79,8 @@ pipeline {
             script{
                app = docker.build('tasks-api')
             }
-            sh 'echo dockerLabel: $dockerLabel
-            sh 'echo buildNumber: $buildNumber
+            sh 'echo dockerLabel: $dockerLabel'
+            sh 'echo buildNumber: $buildNumber'
          }
       }
 
