@@ -6,7 +6,7 @@ pipeline {
 
    stages {
 
-      stage("Development Variables") {
+      stage('Development Variables') {
          when {
             branch 'dev'
          }
@@ -15,11 +15,11 @@ pipeline {
             APP_ENVIRONMENT = 'development'
          }
          steps {
-            sh "echo APP_ENVIRONMENT: $APP_ENVIRONMENT"
+            sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
 
-      stage("QA Variables") {
+      stage('QA Variables') {
          when {
             branch 'qa'
          }
@@ -28,11 +28,11 @@ pipeline {
             APP_ENVIRONMENT = 'qa'
          }
          steps {
-            sh "echo APP_ENVIRONMENT: $APP_ENVIRONMENT"
+            sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
 
-      stage("Production Variables") {
+      stage('Production Variables') {
          when {
             branch 'main'
          }
@@ -41,7 +41,7 @@ pipeline {
             APP_ENVIRONMENT = 'production'
          }
          steps {
-            sh "echo APP_ENVIRONMENT: $APP_ENVIRONMENT"
+            sh 'echo APP_ENVIRONMENT: $APP_ENVIRONMENT'
          }
       }
       
@@ -84,7 +84,7 @@ pipeline {
             script{
                docker.withRegistry('https://830931683151.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:jenkins.tsoft') {
                   app.push('${env.BUILD_NUMBER}')
-                  app.push('env.DOCKER_LABEL')
+                  app.push('$DOCKER_LABEL')
                }
             }
          }
