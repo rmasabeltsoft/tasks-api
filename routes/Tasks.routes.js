@@ -1,8 +1,10 @@
-const express = require('express')
-const GetToDoController = require('../controllers/GetTasks.controller')
+const express = require('express');
+const GetTasksController = require('../controllers/GetTasks.controller');
+const AddTaskController = require('../controllers/AddTask.controller');
 
-const router = new express.Router()
+const router = new express.Router();
 
-router.get('/tasks', GetToDoController)
+router.get('/tasks', GetTasksController);
+router.put('/tasks', AddTaskController);
 
-module.exports = router
+module.exports = router;

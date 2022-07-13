@@ -1,12 +1,12 @@
-const app = require ('./app.js')
-const port = 3000
+const app = require ('./app.js');
+const port = 3000;
 
-const HelloWorldController = require('./controllers/HelloWorld.controller')
-const GetTasksController = require('./controllers/GetTasks.controller')
+const HelloWorldController = require('./controllers/HelloWorld.controller');
+const TasksRouter = require('./routes/Tasks.routes');
 
-app.get('/', HelloWorldController)
-app.get('/tasks', GetTasksController)
+app.get('/', HelloWorldController);
+app.use(TasksRouter);
 
 app.listen(port, () => {
-   console.log('Application running on http://localhost:3000')
-})
+   console.log('Application running on http://localhost:' + port);
+});

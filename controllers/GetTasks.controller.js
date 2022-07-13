@@ -12,8 +12,10 @@ const getTasks = async () => {
    return tasks;
 }
 
-const controller = (request, response) => {
-   response.send(getTasks());
+const controller = async (request, response) => {
+   const tasks = await getTasks();
+
+   return response.json({tasks: tasks});
 }
 
 module.exports = controller
