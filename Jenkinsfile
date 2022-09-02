@@ -68,6 +68,12 @@ pipeline {
       }
 
       stage('Test_Checkmarx') {
+         when {
+            anyOf {
+               branch 'dev';
+               branch 'qa'
+            }
+         }
          steps {
             echo 'Testing Checkmarx...'
             step([$class: 'CxScanBuilder', comment: '', configAsCode: true, credentialsId: 'Checkmarx_Cred', customFields: '', excludeFolders: '', exclusionsSetting: 'global', failBuildOnNewResults: false, failBuildOnNewSeverity: 'HIGH', filterPattern: '''!**/_cvs/**/*, !**/.svn/**/*, !**/.hg/**/*, !**/.git/**/*, !**/.bzr/**/*,
@@ -88,6 +94,12 @@ pipeline {
       }
 
       stage('Test_Kiuwan') {
+         when {
+            anyOf {
+               branch 'dev';
+               branch 'qa'
+            }
+         }
          steps {
             echo 'Testing Kiuwan...'
             kiuwan applicationName: 'Tasks API', connectionProfileUuid: '5PIH-WqhL', failureThreshold: 60.0, label: '00008', sourcePath: '/home/jenkins/jenkins_slave/workspace/Pipeline_Seguridad', unstableThreshold: 96.0
@@ -95,6 +107,12 @@ pipeline {
       }
 	  
       stage('Test_Snyk') {
+         when {
+            anyOf {
+               branch 'dev';
+               branch 'qa'
+            }
+         }
          steps {
             echo 'Testing Snyk...'
             snykSecurity(
