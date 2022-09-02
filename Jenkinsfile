@@ -99,16 +99,26 @@ pipeline {
             kiuwan applicationName: 'Tasks API', connectionProfileUuid: '5PIH-WqhL', failureThreshold: 60.0, label: '00008', sourcePath: '/home/jenkins/jenkins_slave/workspace/aceTsoft_TasksAPIMultibranch_dev', unstableThreshold: 96.0
          }
       }
-	  
-      stage('Test_Snyk') {
-         when {
-            branch 'dev'
-         }
+
+      stage('Test_Snyk_SCA') {
          steps {
-            echo 'Testing Snyk...'
+            echo 'Testing Snyk SCA...'
             snykSecurity(
                snykInstallation: 'snyk@latest',
                snykTokenId: 'Id_Snyk_Cred',
+               failOnIssues: false,
+            )
+         }
+      }
+
+      stage('Test_Snyk_SAST') {
+         steps {
+            echo 'Testing Snyk SAST...'
+            snykSecurity(
+               snykInstallation: 'snyk@latest',
+               snykTokenId: 'Id_Snyk_Cred',
+               additionalArguments: '--code',
+               failOnIssues: false,
             )
          }
       }
