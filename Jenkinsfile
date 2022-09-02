@@ -69,10 +69,7 @@ pipeline {
 
       stage('Test_Checkmarx') {
          when {
-            anyOf {
-               branch 'dev';
-               branch 'qa'
-            }
+            branch 'dev'
          }
          steps {
             echo 'Testing Checkmarx...'
@@ -95,23 +92,17 @@ pipeline {
 
       stage('Test_Kiuwan') {
          when {
-            anyOf {
-               branch 'dev';
-               branch 'qa'
-            }
+            branch 'dev';
          }
          steps {
             echo 'Testing Kiuwan...'
-            kiuwan applicationName: 'Tasks API', connectionProfileUuid: '5PIH-WqhL', failureThreshold: 60.0, label: '00008', sourcePath: '/home/jenkins/jenkins_slave/workspace/Pipeline_Seguridad', unstableThreshold: 96.0
+            kiuwan applicationName: 'Tasks API', connectionProfileUuid: '5PIH-WqhL', failureThreshold: 60.0, label: '00008', sourcePath: '/home/jenkins/jenkins_slave/workspace/aceTsoft_TasksAPIMultibranch_dev', unstableThreshold: 96.0
          }
       }
 	  
       stage('Test_Snyk') {
          when {
-            anyOf {
-               branch 'dev';
-               branch 'qa'
-            }
+            branch 'dev'
          }
          steps {
             echo 'Testing Snyk...'
