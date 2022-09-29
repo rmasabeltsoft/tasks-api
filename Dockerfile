@@ -1,4 +1,6 @@
 FROM node:16-alpine
+COPY --from=bpf80314.live.dynatrace.com/linux/oneagent-codemodules:all / /
+ENV LD_PRELOAD /opt/dynatrace/oneagent/agent/lib64/liboneagentproc.so
 
 # Copy files as a non-root user. The 'node' user is built in the Node image.
 WORKDIR /usr/src/app
